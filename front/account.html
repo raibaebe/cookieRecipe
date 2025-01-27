@@ -50,11 +50,34 @@
         <p>Email: <span id="userEmail"></span></p>
         <a id="addRecipe" class="nav-link" href="addRecipe.html">Add recipe</a>
     </main>
+    <div class="cards-container" id="latest-recipes">
+        <h2>Latest Recipes</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <img src="images/cards1.webp" class="card-img-top" alt="nachos in a palate">
+                    <div class="card-body">
+                        <h5 class="card-title">The Best Recipes To Make For Football Watch Parties</h5>
+                        <a href="https://tasty.co/article/jenniferadams2/best-football-party-recipes" class="btn btn-primary">Read more</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <img src="images/card2.webp" class="card-img-top" alt="back-to-school snacks">
+                    <div class="card-body">
+                        <h5 class="card-title">17 Of The Coolest Back-To-School Snacks That Take Under 10 Minutes To Make</h5>
+                        <a href="https://www.yahoo.com/lifestyle/clever-easy-10-minute-less-162243385.html" class="btn btn-primary">Read more</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>       
         document.addEventListener("DOMContentLoaded", async () => {
             const status = document.getElementById('status');
             const token = localStorage.getItem('authToken'); // Assuming you store the JWT in local storage
-
+            let ID ='';
             if (token) {
                 try {
                     const res = await fetch("http://localhost:5000/auth/account", {
@@ -67,6 +90,8 @@
                     if (res.ok) {
                         const data = await res.json();
                         document.getElementById('userEmail').textContent = data.email;
+                        alert(data.userId);
+                        ID=JSON.stringify(data.userId);
                         document.getElementById('account').style.display = 'block';
                         document.getElementById('logoutButton').style.display = 'block';
                     } else {
@@ -78,6 +103,35 @@
             } else {
                 status.textContent = "Not logged in";
             }
+            try {
+                console.log(ID);
+        const response = await fetch(`http://localhost:5000/recepie/list/${ID}`)
+         
+        const recipes = await response.json();
+        
+        const cardsContainer = document.querySelector(".row");
+        cardsContainer.innerHTML = ""; // Clear existing cards
+        recipes.forEach(recipe => {
+            const card = document.createElement("div");
+            card.className = "col-md-4";
+            card.innerHTML = `
+                <div class="card h-100">
+                    <img src="${recipe.picture_url || 'default.jpg'}" class="card-img-top" alt="Recipe image">
+                    <div class="card-body">
+                        <h5 class="card-title">${JSON.stringify(recipe.title)}</h5>
+                        <p class="card-text">Ingredients: ${JSON.stringify(recipe.ingredients)}</p>
+                    </div>
+                </div>
+            `;
+            cardsContainer.appendChild(card);
+        });
+        // <a href="#" class="btn btn-primary">Read more</a>
+
+        // Create a new div to display additional recipe results
+        
+    } catch (error) {
+        console.error("Error fetching recipes:", error);
+    }
         }
         );
        
@@ -91,6 +145,7 @@
         //     localStorage.removeItem('userPassword');
         //     window.location.href = 'login.html';
         // });
+    
     </script><script src="darkmode.js"></script>
     <script src="script.js"></script>
     <script src="sign.js"></script>

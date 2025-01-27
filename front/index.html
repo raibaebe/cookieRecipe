@@ -168,13 +168,11 @@
 document.addEventListener("DOMContentLoaded", async function () {
     try {
         const response = await fetch("http://localhost:5000/recepie/list")
-         .then(response => response.json())
-         .then(json => setData); // Fetch data from backend
+         
         const recipes = await response.json();
         
         const cardsContainer = document.querySelector(".row");
         cardsContainer.innerHTML = ""; // Clear existing cards
-        alert(recipes);
         recipes.forEach(recipe => {
             const card = document.createElement("div");
             card.className = "col-md-4";
@@ -183,32 +181,32 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <div class="card h-100">
                     <img src="${recipe.picture_url || 'default.jpg'}" class="card-img-top" alt="Recipe image">
                     <div class="card-body">
-                        <h5 class="card-title">${recipe.title}</h5>
-                        <p class="card-text">Ingredients: ${recipe.ingredients}</p>
+                        <h5 class="card-title">${JSON.stringify(recipe.title)}</h5>
+                        <p class="card-text">Ingredients: ${JSON.stringify(recipe.ingredients)}</p>
                     </div>
                 </div>
             `;
             cardsContainer.appendChild(card);
         });
-        // <a href="#" class="btn btn-primary">Read more</a>
+        // // <a href="#" class="btn btn-primary">Read more</a>
 
-        // Create a new div to display additional recipe results
-        const resultsContainer = document.createElement("div");
-        resultsContainer.className = "results-container";
-        resultsContainer.innerHTML = "<h2>Additional Recipe Results</h2>";
+        // // Create a new div to display additional recipe results
+        // const resultsContainer = document.createElement("div");
+        // resultsContainer.className = "results-container";
+        // resultsContainer.innerHTML = "<h2>Additional Recipe Results</h2>";
 
-        recipes.forEach(recipe => {
-            const resultItem = document.createElement("div");
-            resultItem.className = "result-item";
-            resultItem.innerHTML = `
-                <h3>${recipe.title}</h3>
-                <p>Ingredients: ${recipe.ingredients}</p>
-                <p>Instructions: ${recipe.instructions}</p>
-            `;
-            resultsContainer.appendChild(resultItem);
-        });
+        // recipes.forEach(recipe => {
+        //     const resultItem = document.createElement("div");
+        //     resultItem.className = "result-item";
+        //     resultItem.innerHTML = `
+        //         <h3>${recipe.title}</h3>
+        //         <p>Ingredients: ${recipe.ingredients}</p>
+        //         <p>Instructions: ${recipe.instructions}</p>
+        //     `;
+        //     resultsContainer.appendChild(resultItem);
+        // });
 
-        document.body.appendChild(resultsContainer);
+        // document.body.appendChild(resultsContainer);
     } catch (error) {
         console.error("Error fetching recipes:", error);
     }

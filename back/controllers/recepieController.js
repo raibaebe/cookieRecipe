@@ -32,5 +32,16 @@ router.get('/list', async (req, res) => {
         return res.status(500).json({ message: "Internal Server Error" });
     }
 });
+router.get('/list/:id', async (req,res)=>{
+    const id= req.params.id;
+    console.log(id);
+    try{
+        const recipeId = await recipeDao.getRecepieid(id);
+        return res.status(200).json(recipeId);
+    }catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+});
 
 module.exports = router;
