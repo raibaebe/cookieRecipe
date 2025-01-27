@@ -25,6 +25,7 @@ router.post('/add', async (req, res) => {
 router.get('/list', async (req, res) => {
     try {
         const recepies = await recipeDao.getRecepie();
+        console.log(recepies);
         return res.status(200).json(recepies);
     } catch (error) {
         console.error(error);
