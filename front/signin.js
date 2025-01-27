@@ -1,12 +1,15 @@
 
 
-document.getElementById('signInForm').addEventListener('submit', function (event) {
+document.getElementById('signInForm').addEventListener('submit', async function (event) {
     
     event.preventDefault();
+    const username = document.getElementById('signInName').value;
     const email = document.getElementById('signInEmail').value;
     const password = document.getElementById('signInPassword').value;
-    if (email === "" || password === "") {
-        document.getElementById("alarmMessage").innerHTML = "All fields are required.";
+    if (email === "" || password === "" || username === "") {
+        if(email === "") document.getElementById("alarmMessage").innerHTML = "email is rquired.";
+        else if(password === "") document.getElementById("alarmMessage").innerHTML = "password is rquired.";
+        else document.getElementById("alarmMessage").innerHTML = "username is rquired.";
         document.getElementById("alarmMessage").style.color = 'rgb(237,73,86)';
         return;
     }
@@ -20,15 +23,53 @@ document.getElementById('signInForm').addEventListener('submit', function (event
         document.getElementById("alarmMessage").style.color = 'rgb(237,73,86)';
         return;
     }
-    if (email && password) {
-        localStorage.setItem('userEmail', email);
-        localStorage.setItem('userPassword', password);
+    
+    const userData = {
+        userName: username,
+        email: email,
+        password: password,
+    };
 
-        document.getElementById("alarmMessage").style.color = '#13795b';
-        document.getElementById("alarmMessage").innerHTML = "Sign In successful! Go to the Login page!";
+    try {
+        const response = await fetch('http://localhost:5000/auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            showMessage("Sign In successful! Welcome, " + data.username + "!", "success");
+        } else {
+            const error = await response.json();
+            showMessage("Sign In failed: " + error.message, "error");
+        }
+    } catch (error) {
+        showMessage("An error occurred: " + error.message, "error");
     }
+});
+
+    
+    // if (email && password) {
+    //     localStorage.setItem('userEmail', email);
+    //     localStorage.setItem('userPassword', password);
+
+    //     document.getElementById("alarmMessage").style.color = '#13795b';
+    //     document.getElementById("alarmMessage").innerHTML = "Sign In successful! Go to the Login page!";
+    // }
     function validateEmail(email) {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(String(email).toLowerCase());
     }
-});
+
+    function showMessage(message, type) {
+        const alarmMessage = document.getElementById("alarmMessage");
+        if (type === "error") {
+            alarmMessage.style.color = 'rgb(237,73,86)';
+        } else if (type === "success") {
+            alarmMessage.style.color = '#13795b';
+        }
+        alarmMessage.innerHTML = message;
+    }
