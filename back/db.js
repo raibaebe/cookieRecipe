@@ -3,10 +3,10 @@ const {Client} = require('pg');
 
 const client = new Client({
     user: 'postgres',
-    password: 'root',
+    password: '0000',
     host: 'localhost',
     port: '5432',
-    database: 'CookieRecipe',
+    database: 'cookie',
 });
 
 client.connect()
@@ -20,3 +20,4 @@ client.connect()
 module.exports = {
     query: (text, params) => client.query(text, params),
 };
+
