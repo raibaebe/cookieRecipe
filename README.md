@@ -17,5 +17,10 @@ Requiremnets:
 before run, configure back/db.js file, change user, password, and database name to yours
 
 run backend using 
+
+
               node back/index.js
+
+
+              
 then open front/index.html file
