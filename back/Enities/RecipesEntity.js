@@ -1,4 +1,4 @@
-class RecepieEntity {
+class RecipeEntity {
     constructor(title, ingredients, instructions, picture_url, author_id) {   
       this.title = title;
       this.ingredients = ingredients;
@@ -7,4 +7,4 @@ class RecepieEntity {
       this.author_id = author_id;
     }
   }
-  module.exports = RecepieEntity;
+  module.exports = RecipeEntity;

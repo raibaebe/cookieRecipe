@@ -46,22 +46,51 @@
     </header>
   
     <main class="container mt-4">
-        <h1>Welcome to Your Account Page</h1>
+        <h1 id = "status">Welcome to Your Account Page</h1>
         <p>Email: <span id="userEmail"></span></p>
         <a id="addRecipe" class="nav-link" href="addRecipe.html">Add recipe</a>
     </main>
-    <script>
-        // Display logged-in user email
-        const userEmail = localStorage.getItem('userEmail');
-        document.getElementById('userEmail').textContent = userEmail ? userEmail : 'Guest';
+    <script>       
+        document.addEventListener("DOMContentLoaded", async () => {
+            const status = document.getElementById('status');
+            const token = localStorage.getItem('authToken'); // Assuming you store the JWT in local storage
 
-        // Logout functionality
-        document.getElementById('logoutButton').addEventListener('click', () => {
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('userEmail');
-            localStorage.removeItem('userPassword');
-            window.location.href = 'login.html';
-        });
+            if (token) {
+                try {
+                    const res = await fetch("http://localhost:5000/auth/account", {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': token
+                        }
+                    });
+
+                    if (res.ok) {
+                        const data = await res.json();
+                        document.getElementById('userEmail').textContent = data.email;
+                        document.getElementById('account').style.display = 'block';
+                        document.getElementById('logoutButton').style.display = 'block';
+                    } else {
+                        status.textContent = "Failed to fetch account data";
+                    }
+                } catch (err) {
+                    status.textContent = "Error: " + err.message;
+                }
+            } else {
+                status.textContent = "Not logged in";
+            }
+        }
+        );
+       
+        // const userEmail = localStorage.getItem('userEmail');
+        // document.getElementById('userEmail').textContent = userEmail ? userEmail : 'Guest';
+
+        // // Logout functionality
+        // document.getElementById('logoutButton').addEventListener('click', () => {
+        //     localStorage.removeItem('isLoggedIn');
+        //     localStorage.removeItem('userEmail');
+        //     localStorage.removeItem('userPassword');
+        //     window.location.href = 'login.html';
+        // });
     </script><script src="darkmode.js"></script>
     <script src="script.js"></script>
     <script src="sign.js"></script>

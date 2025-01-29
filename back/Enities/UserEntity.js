@@ -1,8 +1,9 @@
+//class of user atrributes
 class UserEntity
 {
-    constructor(userName, email, password)
+    constructor(username, email, password)
     {
-        this.userName = userName;
+        this.username = username;
         this.email = email;
         this.password = password;
     }

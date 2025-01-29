@@ -1,12 +1,16 @@
 const DB = require("../db")
 
+//class for making CRUD operation for Users
+
 class UserDAO
 {
+    //function to INSER INTO
     async createUser(user) {
         try {
+            //query
             await DB.query(
                 "INSERT INTO users (username, email, password) VALUES ($1, $2, $3)",
-                [user.userName, user.email, user.password]
+                [user.username, user.email, user.password]
             );
             return { success: true, message: "User created successfully" };
         } catch (error) {
@@ -15,8 +19,10 @@ class UserDAO
         }
     }
 
+    //FUNCTION TO SELECT FROM USRES
     async getUser(email) {
         try {
+            //query
             const result = await DB.query(
                 "SELECT username, email, password FROM users WHERE email = $1",
                 [email]

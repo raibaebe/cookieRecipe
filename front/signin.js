@@ -25,7 +25,7 @@ document.getElementById('signInForm').addEventListener('submit', async function 
     }
     
     const userData = {
-        userName: username,
+        username: username,
         email: email,
         password: password,
     };

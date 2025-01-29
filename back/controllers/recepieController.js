@@ -1,17 +1,19 @@
-const recepieDao = require("../DAO/recepieDAO");
-const RecepieEntity = require("../Entities/RecepieEntity");
+const recipeDao = require("../DAO/recepieDAO");
+const RecipeEntity = require("../Enities/RecipesEntity");
 const express = require('express');
 const router = express.Router();
 
 router.post('/add', async (req, res) => {
     try {
-        console.log("aliloh");
+        //for while without pictures
         const { title, ingredients, instructions } = req.body;
+        //error handling
         if (!title || !ingredients || !instructions) {
             return res.status(400).json({ message: "All fields are required" });
         }
-        const recepie = new RecepieEntity(title, ingredients, instructions);
-        await recepieDao.createRecepie(recepie);
+        //the picture url is null
+        const recipe = new RecipeEntity(title, ingredients, instructions, null);
+        await recipeDao.createRecepie(recipe);                                  //calling recipe's DAO function to insert into db
 
         return res.status(201).json({ message: "Recepie added successfully" });
     } catch (error) {
@@ -22,7 +24,7 @@ router.post('/add', async (req, res) => {
 
 router.get('/list', async (req, res) => {
     try {
-        const recepies = await recepieDao.getRecepie();
+        const recepies = await recipeDao.getRecepie();
         return res.status(200).json(recepies);
     } catch (error) {
         console.error(error);
