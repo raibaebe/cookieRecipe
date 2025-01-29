@@ -7,7 +7,10 @@ Has features :
 
 
 Requiremnets:
+      
+
       npm install express postgres jsonwebtoken bcrypt
+
 
       also you need to have postgreSQL database
 
