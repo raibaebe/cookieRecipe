@@ -24,16 +24,31 @@ class recepieDAO
     async getRecepie() {
         try {
             const result = await DB.query(
-                "SELECT title, ingredients, instructions, picture_url FROM recepie "
+                "SELECT title, ingredients, instructions, picture_url FROM recipe "
             );
             if (result.rows.length === 0) {
                 return null; 
             }
-            return result.rows[0];
+            return result.rows;
         } catch (error) {
             console.error("Error in getRecepie:", error.message);
             throw new Error("Failed to retrieve recepie. Please try again later.");
         }
+    }
+    async getRecepieid(id){
+        try{
+            const result = await DB.query(
+                "SELECT title, ingredients, instructions, picture_url FROM recipe WHERE author_id=$1",[id]
+            );
+            if (result.rows.length === 0) {
+                return null; 
+            }
+            return result.rows;
+        } catch (error) {
+            console.error("Error in getRecepie:", error.message);
+            throw new Error("Failed to retrieve recepie. Please try again later.");
+        }
+        
     }
 }
 

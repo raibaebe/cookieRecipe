@@ -25,8 +25,20 @@ router.post('/add', async (req, res) => {
 router.get('/list', async (req, res) => {
     try {
         const recepies = await recipeDao.getRecepie();
+        console.log(recepies);
         return res.status(200).json(recepies);
     } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+router.get('/list/:id', async (req,res)=>{
+    const id= req.params.id;
+    console.log(id);
+    try{
+        const recipeId = await recipeDao.getRecepieid(id);
+        return res.status(200).json(recipeId);
+    }catch (error) {
         console.error(error);
         return res.status(500).json({ message: "Internal Server Error" });
     }

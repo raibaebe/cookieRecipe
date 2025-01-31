@@ -24,7 +24,7 @@ class UserDAO
         try {
             //query
             const result = await DB.query(
-                "SELECT username, email, password FROM users WHERE email = $1",
+                "SELECT id, username, email, password FROM users WHERE email = $1",
                 [email]
             );
             if (result.rows.length === 0) {

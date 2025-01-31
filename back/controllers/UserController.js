@@ -45,7 +45,7 @@ const verifyToken = require('../controllers/AuthorizationMiddlware');
             //creating json web token to check for if user is authed in the other codes.
             const token = jwt.sign(
                 {
-                    userId: userData.user_id,
+                    userId: userData.id,
                     username: userData.username,
                     email: userData.email
                 }, 
@@ -65,7 +65,8 @@ const verifyToken = require('../controllers/AuthorizationMiddlware');
         res.status(200).json({ 
             message: 'Protected route accessed', 
             username: req.username, 
-            email: req.email 
+            email: req.email, 
+            userId: req.userId,
         });
     });
 
