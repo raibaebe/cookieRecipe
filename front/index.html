@@ -176,7 +176,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         recipes.forEach(recipe => {
             const card = document.createElement("div");
             card.className = "col-md-4";
-            alert(recipe.title);
             card.innerHTML = `
                 <div class="card h-100">
                     <img src="${recipe.picture_url || 'default.jpg'}" class="card-img-top" alt="Recipe image">

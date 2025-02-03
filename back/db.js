@@ -3,10 +3,10 @@ const {Client} = require('pg');
 
 const client = new Client({
     user: 'postgres',
-    password: '1234',
+    password: 'root',
     host: 'localhost',
     port: '5432',
-    database: 'cookierecipe',
+    database: 'CookieRecipe',
 });
 
 client.connect()

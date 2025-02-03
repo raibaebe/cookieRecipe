@@ -52,7 +52,7 @@ const verifyToken = require('../controllers/AuthorizationMiddlware');
                 'secret-key',
                 {expiresIn:'1h'}
             )
-            return res.status(200).json({message:"Sign in Successful", username: userData.username, token:token});
+            return res.status(200).json({message:"Sign in Successful",userid: userData.id, username: userData.username, token:token});
         }catch(error) {
             console.error(error);
             return res.status(500).json({ message: "Internal Server Error" });

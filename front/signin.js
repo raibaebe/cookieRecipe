@@ -39,6 +39,8 @@ document.getElementById('signInForm').addEventListener('submit', async function 
             body: JSON.stringify(userData),
         });
 
+"Print ${JSON.stringify(recipe.title)}"
+
         if (response.ok) {
             const data = await response.json();
             showMessage("Sign In successful! Welcome, " + data.username + "!", "success");

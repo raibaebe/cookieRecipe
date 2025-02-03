@@ -10,8 +10,8 @@ class recepieDAO
     async createRecepie(recepie) {
         try {
             await DB.query(
-                "INSERT INTO recipe (title, ingredients, instructions, picture_url, author_id) VALUES ($1, $2, $3, $4, $5)",
-                [recepie.title, recepie.ingredients, recepie.instructions, recepie.picture_url, recepie.author_id]
+                "INSERT INTO recipe (title, ingredients, instructions, picture_url, author_id, category) VALUES ($1, $2, $3, $4, $5, )",
+                [recepie.title, recepie.ingredients, recepie.instructions, recepie.picture_url, recepie.author_id, recepie.category]
             );
             return { success: true, message: "Recepie created successfully" };
         } catch (error) {
@@ -20,7 +20,7 @@ class recepieDAO
         }
     }
 
-    //function to get all recipes
+    //function to get all    recipes
     async getRecepie() {
         try {
             const result = await DB.query(

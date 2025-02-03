@@ -36,6 +36,7 @@ document.getElementById('logInForm').addEventListener('submit', async function (
             const data = await response.json();
             showMessage("Log In successful! Welcome, " + data.username + "!", "success");
             localStorage.setItem('authToken', data.token);
+            localStorage.setItem('user_id', data.userid);
         } else {
             const error = await response.json();
             showMessage("Log In failed: " + error.message, "error");

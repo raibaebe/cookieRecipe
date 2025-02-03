@@ -90,7 +90,6 @@
                     if (res.ok) {
                         const data = await res.json();
                         document.getElementById('userEmail').textContent = data.email;
-                        alert(data.userId);
                         ID=JSON.stringify(data.userId);
                         document.getElementById('account').style.display = 'block';
                         document.getElementById('logoutButton').style.display = 'block';
