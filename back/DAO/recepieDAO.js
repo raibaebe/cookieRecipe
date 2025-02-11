@@ -48,7 +48,31 @@ class recepieDAO
             console.error("Error in getRecepie:", error.message);
             throw new Error("Failed to retrieve recepie. Please try again later.");
         }
-        
+    
+    }
+    async updateRecepie(id, recepie) {
+        try {
+            await DB.query(
+                "UPDATE recipe SET title=$1, ingredients=$2, instructions=$3, picture_url=$4, category=$5 WHERE id=$6",
+                [recepie.title, recepie.ingredients, recepie.instructions, recepie.picture_url, recepie.category, id]
+            );
+            return { success: true, message: "Recepie updated successfully" };
+        } catch (error) {
+            console.error("Error in updateRecepie:", error.message);
+            throw new Error("Failed to update recepie. Please try again later.");
+        }
+    }
+    async deleteRecepie(id) {
+        try {
+            await DB.query(
+                "DELETE FROM recipe WHERE id=$1",
+                [id]
+            );
+            return { success: true, message: "Recepie deleted successfully" };
+        } catch (error) {
+            console.error("Error in deleteRecepie:", error.message);
+            throw new Error("Failed to delete recepie. Please try again later.");
+        }
     }
 }
 

@@ -112,8 +112,6 @@
                         </form>
                     </div>
                 
-        
-                    
                 </div>
             <div class="main-content-right">
                 <a href="https://the99centchef.blogspot.com/2010/10/fettuccine-alfredo.html?m=1" class="hover-link" target="_blank">
@@ -158,9 +156,25 @@
         <p class="faq-answer">Simply enter an ingredient in the search box and hit the search button.</p>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="recipeModal" tabindex="-1" aria-labelledby="recipeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="recipeModalLabel">Recipe Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+       
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-
-<footer id="footer"><p> by: Kassymkyzy Raikhan IT-2303</p>
+<footer id="footer"><p> by: Kassymkyzy Raikhan, Koszhanova Aigerim, Khamidulla Alikhan | IT-2303</p>
     <div id="date-time" >
 </div>
 </footer>
@@ -179,37 +193,36 @@ document.addEventListener("DOMContentLoaded", async function () {
             card.innerHTML = `
                 <div class="card h-100">
                     <img src="${recipe.picture_url || 'default.jpg'}" class="card-img-top" alt="Recipe image">
-                    <div class="card-body">
+                    <div class="ca  rd-body">
                         <h5 class="card-title">${JSON.stringify(recipe.title)}</h5>
-                        <p class="card-text">Ingredients: ${JSON.stringify(recipe.ingredients)}</p>
+                        <button  class="btn btn-primary show-recipe-btn" data-bs-toggle="modal" data-bs-target="#recipeModal" "> Show </button>
                     </div>
                 </div>
             `;
+            card.querySelector(".show-recipe-btn").addEventListener("click", () => showRecipeDetails(recipe));
+
             cardsContainer.appendChild(card);
         });
-        // // <a href="#" class="btn btn-primary">Read more</a>
-
-        // // Create a new div to display additional recipe results
-        // const resultsContainer = document.createElement("div");
-        // resultsContainer.className = "results-container";
-        // resultsContainer.innerHTML = "<h2>Additional Recipe Results</h2>";
-
-        // recipes.forEach(recipe => {
-        //     const resultItem = document.createElement("div");
-        //     resultItem.className = "result-item";
-        //     resultItem.innerHTML = `
-        //         <h3>${recipe.title}</h3>
-        //         <p>Ingredients: ${recipe.ingredients}</p>
-        //         <p>Instructions: ${recipe.instructions}</p>
-        //     `;
-        //     resultsContainer.appendChild(resultItem);
-        // });
-
-        // document.body.appendChild(resultsContainer);
     } catch (error) {
         console.error("Error fetching recipes:", error);
     }
 });
+function showRecipeDetails(recipe) {
+    const modal = new bootstrap.Modal(document.getElementById('recipeModal'));
+    let modalBody = document.querySelector(".modal-body");
+    modalBody.innerHTML = `
+        <h3>title:  ${recipe.title}</h3>
+        <p><strong>Ingredients:</strong> ${recipe.ingredients}</p>
+        <p><strong>Instructions:</strong> ${recipe.instructions}</p>       
+    `;
+
+    
+    modal.show();// Convert back to object
+
+    
+
+    
+}
 
 </script>
 <script src="script.js"></script>
