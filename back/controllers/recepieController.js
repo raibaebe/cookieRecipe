@@ -5,12 +5,16 @@ const router = express.Router();
 
 router.post('/add', async (req, res) => {
     try {
-        const { title, ingredients, instructions, author_id } = req.body;
+        //for while without pictures
+        const { title, ingredients, instructions, author_id, category} = req.body;
+        //error handling
         if (!title || !ingredients || !instructions) {
             return res.status(400).json({ message: "All fields are required" });
         }
-        const recipe = new RecipeEntity(title, ingredients, instructions, null, author_id, null);
-        await recipeDao.createRecepie(recipe);
+        //the picture url is null
+        const recipe = new RecipeEntity(title, ingredients, instructions, null, author_id, category);
+        await recipeDao.createRecepie(recipe);                                  //calling recipe's DAO function to insert into db
+
         return res.status(201).json({ message: "Recepie added successfully" });
     } catch (error) {
         console.error(error);
