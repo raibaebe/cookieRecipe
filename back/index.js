@@ -5,10 +5,10 @@ const userRouter = require('../back/controllers/UserController')
 const recepieRouter = require('../back/controllers/recepieController')
 const cors = require("cors");
 
-const port = 5050;
-
+const port = 5000;
+app.use(express.static(path.join(__dirname,"../front")));
 app.get("/", (request, responce) =>{
-    responce.send("SalemAlem");
+    responce.sendFile(path.join(__dirname, "../front/index.html"));
 });
 
 app.get("/main", (req, res) =>{

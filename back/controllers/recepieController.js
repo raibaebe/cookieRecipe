@@ -59,12 +59,25 @@ router.get('/list/:id', async (req, res) => {
         return res.status(500).json({ message: "Internal Server Error" });
     }
 });
+router.get('/update/:id', async (req, res) => {
+    const id = req.params.id;
+    try {
+        const recipe = await recipeDao.getRecepieId(id);
+        if (!recipe) {
+            return res.status(404).json({ message: "Recipe not found" });
+        }
+        return res.status(200).json(recipe);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+});
 
 router.put('/update/:id', async (req, res) => {
     const id = req.params.id;
-    const { title, ingredients, instructions, picture_url, category } = req.body;
+    const { title, ingredients, instructions, picture_url, author_id, category } = req.body;
     try {
-        const recipe = new RecipeEntity(title, ingredients, instructions, picture_url, null, category);
+        const recipe = new RecipeEntity(title, ingredients, instructions, picture_url, author_id, category);
         const result = await recipeDao.updateRecepie(id, recipe);
         return res.status(200).json(result);
     } catch (error) {
@@ -73,27 +86,40 @@ router.put('/update/:id', async (req, res) => {
     }
 });
 
+const fs = require('fs');
+
 router.delete('/delete/:id', async (req, res) => {
     const id = req.params.id;
     try {
+        const recipe = await recipeDao.getRecepieId(id);
+        if (!recipe) {
+            return res.status(404).json({ message: "Recipe not found" });
+        }
+
+        if (recipe.imagePath) {
+            const imagePath = path.join(__dirname, '../../front/images/user_images', path.basename(recipe.imagePath));
+            if (fs.existsSync(imagePath)) {
+                fs.unlinkSync(imagePath);
+            }
+        }
+
         const result = await recipeDao.deleteRecepie(id);
         return res.status(200).json(result);
     } catch (error) {
-
         console.error(error);
         return res.status(500).json({ message: "Internal Server Error" });
     }
 });
 
 
+
 const upload = multer({ storage });
 
 router.post('/upload-image', upload.single('image'), (req, res) => {
     if (!req.file) {
-        console.log("loh");
         return res.status(400).json({ message: 'No file uploaded' });
     }
-    res.status(200).json({ path: `../front/images/user_images/${req.file.filename}` }); 
+    res.status(200).json({ path: `/images/user_images/${req.file.filename}` }); 
 });
 
 module.exports = router;

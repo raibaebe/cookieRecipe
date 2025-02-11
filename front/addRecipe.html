@@ -50,12 +50,10 @@ input[type="submit"]:hover {
 <body>
     
     <header>
-    
         <nav class="navbar navbar-expand-lg bg-body-tertiary w-100">
             <a class="navbar-brand" href="index.html">
                 <img class="logo" src="images/Recipe Finder (1).png" alt="logo" width="30" height="24">
             </a>
-
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -64,10 +62,10 @@ input[type="submit"]:hover {
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                     <a class="nav-link" href="tips.html">Tips&Tricks</a>
-                    <a id="signInButton" class="nav-link" href="signin.html">Sign In</a>
-                    <a id="logInButton" class="nav-link" href="login.html">Log In</a>
-                    <a id="account" class="nav-link" style="display: none;" href="account.html">Account</a>
-                    <a id="logoutButton" class="nav-link" style="display: none;" href="#">Logout</a>
+                    <!-- <a id="signInButton" class="nav-link" href="signin.html">Sign In</a>
+                    <a id="logInButton" class="nav-link" href="login.html">Log In</a> -->
+                    <a id="account" class="nav-link"  href="account.html">Account</a>
+                    <a id="logoutButton" class="nav-link"  href="#">Logout</a>
                     <span id="userEmailDisplay" style="margin-left: 10px;margin-top: 8px;color: rgb(100, 99, 99);"></span>
                 </div>
                 <div class="social-media ms-auto">
@@ -75,12 +73,9 @@ input[type="submit"]:hover {
                     <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
                     <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
                     <button id="toggleDarkMode" class="btn">DarkMode</button>
-
                 </div>
             </div>
-           
         </nav>
-        
     </header>
   
     <div id = "content" style = "padding: 10%;">
@@ -94,6 +89,13 @@ input[type="submit"]:hover {
 
         <label for="instructions">Instructions:</label>
         <textarea id="instructions" name="instructions" required></textarea><br><br>
+
+        <label for = "category"> Category of the food</label>
+        <select id = "category">
+            <option value = "breakfast">breakfast</option>
+            <option value = "first course">first course</option>
+            <option value = "second course">second course</option>
+        </select>
 
         <label>Image of the Food</label>
         <input type="file" id = "image"><br><br>

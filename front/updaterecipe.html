@@ -74,14 +74,14 @@
 
             if (recipeId) {
                 try {
-                    const response = await fetch(`http://localhost:5000/recepie/list/${recipeId}`, {
+                    const response = await fetch(`/recepie/update/${recipeId}`, {
                         method: 'GET',
                         headers: {
                             'Authorization': token
                         }
                     });
                     const recipe = await response.json();
-                    document.getElementById('title').value = recipe.title;
+                    document.getElementById('title').value = JSON.stringify(recipe.title);
                     document.getElementById('ingredients').value = recipe.ingredients;
                     document.getElementById('instructions').value = recipe.instructions;
                     document.getElementById('picture_url').value = recipe.picture_url;
@@ -102,7 +102,7 @@
                 };
 
                 try {
-                    const response = await fetch(`http://localhost:5000/recepie/update/${recipeId}`, {
+                    const response = await fetch(`/recepie/update/${recipeId}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',

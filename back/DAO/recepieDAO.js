@@ -24,7 +24,7 @@ class recepieDAO
     async getRecepie() {
         try {
             const result = await DB.query(
-                "SELECT title, ingredients, instructions, picture_url, category FROM recipe "
+                "SELECT id, title, ingredients, instructions, picture_url, category FROM recipe "
             );
             if (result.rows.length === 0) {
                 return null; 
@@ -35,15 +35,32 @@ class recepieDAO
             throw new Error("Failed to retrieve recepie. Please try again later.");
         }
     }
+    //this is for taking only users recipes
     async getRecepieid(id){
         try{
             const result = await DB.query(
-                "SELECT title, ingredients, instructions, picture_url FROM recipe WHERE author_id=$1",[id]
+                "SELECT id, title, ingredients, instructions, picture_url FROM recipe WHERE author_id=$1",[id]
             );
             if (result.rows.length === 0) {
                 return null; 
             }
             return result.rows;
+        } catch (error) {
+            console.error("Error in getRecepie:", error.message);
+            throw new Error("Failed to retrieve recepie. Please try again later.");
+        }
+    
+    }
+    //this is for taken recipe before update
+    async getRecepieId(id){
+        try{
+            const result = await DB.query(
+                "SELECT id, title, ingredients, instructions, picture_url FROM recipe WHERE id=$1",[id]
+            );
+            if (result.rows.length === 0) {
+                return null; 
+            }
+            return result.rows[0];
         } catch (error) {
             console.error("Error in getRecepie:", error.message);
             throw new Error("Failed to retrieve recepie. Please try again later.");
