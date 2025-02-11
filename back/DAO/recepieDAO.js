@@ -1,12 +1,6 @@
-const DB = require("../db")
+const DB = require("../db");
 
-// const recipesTable = "recipe"
-
-// class for making CRUD and all other database operations with recipe table
-
-class recepieDAO
-{
-    //function to create (INSERT INTO) a recipe
+class recepieDAO {
     async createRecepie(recepie) {
         try {
             await DB.query(
@@ -20,14 +14,13 @@ class recepieDAO
         }
     }
 
-    //function to get all    recipes
     async getRecepie() {
         try {
             const result = await DB.query(
-                "SELECT title, ingredients, instructions, picture_url FROM recipe "
+                "SELECT id, title, ingredients, instructions, picture_url FROM recipe"
             );
             if (result.rows.length === 0) {
-                return null; 
+                return null;
             }
             return result.rows;
         } catch (error) {
@@ -35,21 +28,22 @@ class recepieDAO
             throw new Error("Failed to retrieve recepie. Please try again later.");
         }
     }
-    async getRecepieid(id){
-        try{
+
+    async getRecepieid(id) {
+        try {
             const result = await DB.query(
-                "SELECT title, ingredients, instructions, picture_url FROM recipe WHERE author_id=$1",[id]
+                "SELECT id, title, ingredients, instructions, picture_url FROM recipe WHERE id=$1", [id]
             );
             if (result.rows.length === 0) {
-                return null; 
+                return null;
             }
-            return result.rows;
+            return result.rows[0];
         } catch (error) {
             console.error("Error in getRecepie:", error.message);
             throw new Error("Failed to retrieve recepie. Please try again later.");
         }
-    
     }
+
     async updateRecepie(id, recepie) {
         try {
             await DB.query(
@@ -62,6 +56,7 @@ class recepieDAO
             throw new Error("Failed to update recepie. Please try again later.");
         }
     }
+
     async deleteRecepie(id) {
         try {
             await DB.query(
