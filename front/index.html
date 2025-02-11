@@ -187,25 +187,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             `;
             cardsContainer.appendChild(card);
         });
-        // // <a href="#" class="btn btn-primary">Read more</a>
-
-        // // Create a new div to display additional recipe results
-        // const resultsContainer = document.createElement("div");
-        // resultsContainer.className = "results-container";
-        // resultsContainer.innerHTML = "<h2>Additional Recipe Results</h2>";
-
-        // recipes.forEach(recipe => {
-        //     const resultItem = document.createElement("div");
-        //     resultItem.className = "result-item";
-        //     resultItem.innerHTML = `
-        //         <h3>${recipe.title}</h3>
-        //         <p>Ingredients: ${recipe.ingredients}</p>
-        //         <p>Instructions: ${recipe.instructions}</p>
-        //     `;
-        //     resultsContainer.appendChild(resultItem);
-        // });
-
-        // document.body.appendChild(resultsContainer);
+        
     } catch (error) {
         console.error("Error fetching recipes:", error);
     }
