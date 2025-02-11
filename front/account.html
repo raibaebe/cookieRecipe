@@ -53,7 +53,9 @@
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
+            authorized = false;
             const status = document.getElementById('status');
+            const addRecipeButton = f=document.getElementById('addRecipe');
             const token = localStorage.getItem('authToken'); // Assuming you store the JWT in local storage
             let ID = '';
             if (token) {
@@ -66,21 +68,27 @@
                     });
 
                     if (res.ok) {
+                        authorized = true;
                         const data = await res.json();
                         document.getElementById('userEmail').textContent = data.email;
                         ID = data.userId;
                         document.getElementById('account').style.display = 'block';
                         document.getElementById('logoutButton').style.display = 'block';
                     } else {
-                        status.textContent = "Failed to fetch account data";
+                        status.textContent = "Not logged in";
+                        addRecipeButton.textContent = " ";
                     }
                 } catch (err) {
                     status.textContent = "Error: " + err.message;
                 }
             } else {
                 status.textContent = "Not logged in";
+                addRecipeButton.textContent = " ";
             }
+            if(authorized === true)
+            {
             try {
+
                 console.log(ID);
                 const response = await fetch(`http://localhost:5000/recepie/list/${ID}`);
                 const recipes = await response.json();
