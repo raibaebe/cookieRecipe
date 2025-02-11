@@ -24,7 +24,7 @@ class recepieDAO
     async getRecepie() {
         try {
             const result = await DB.query(
-                "SELECT title, ingredients, instructions, picture_url FROM recipe "
+                "SELECT title, ingredients, instructions, picture_url, category FROM recipe "
             );
             if (result.rows.length === 0) {
                 return null; 
