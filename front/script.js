@@ -126,7 +126,7 @@ document.querySelectorAll('.recipe-btn').forEach(button => {
 
         setTimeout(() => {
             ripple.remove();
-        }, 600); // Removes the ripple element after animation
+        }, 600); 
     });
 });
 

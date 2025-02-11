@@ -10,6 +10,7 @@ function verifyToken(req, res, next)
     try 
     {
         const decoded = jwt.verify(token, 'secret-key');
+        console.log("decoded is" + decoded);
         req.userId = decoded.userId;
         req.username = decoded.username;
         req.email = decoded.email;

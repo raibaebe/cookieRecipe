@@ -10,7 +10,7 @@ class recepieDAO
     async createRecepie(recepie) {
         try {
             await DB.query(
-                "INSERT INTO recipe (title, ingredients, instructions, picture_url, author_id, category) VALUES ($1, $2, $3, $4, $5, )",
+                "INSERT INTO recipe (title, ingredients, instructions, picture_url, author_id, category) VALUES ($1, $2, $3, $4, $5, $6)",
                 [recepie.title, recepie.ingredients, recepie.instructions, recepie.picture_url, recepie.author_id, recepie.category]
             );
             return { success: true, message: "Recepie created successfully" };
