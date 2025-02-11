@@ -25,7 +25,6 @@ router.post('/add', async (req, res) => {
 router.get('/list', async (req, res) => {
     try {
         const recepies = await recipeDao.getRecepie();
-        console.log(recepies);
         return res.status(200).json(recepies);
     } catch (error) {
         console.error(error);
@@ -35,13 +34,36 @@ router.get('/list', async (req, res) => {
 
 router.get('/list/:id', async (req, res) => {
     const id = req.params.id;
-    console.log(id);
     try {
         const recipe = await recipeDao.getRecepieid(id);
         if (!recipe) {
             return res.status(404).json({ message: "Recipe not found" });
         }
         return res.status(200).json(recipe);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+
+router.put('/update/:id', async (req, res) => {
+    const id = req.params.id;
+    const { title, ingredients, instructions, picture_url, category } = req.body;
+    try {
+        const recipe = new RecipeEntity(title, ingredients, instructions, picture_url, null, category);
+        const result = await recipeDao.updateRecepie(id, recipe);
+        return res.status(200).json(result);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+
+router.delete('/delete/:id', async (req, res) => {
+    const id = req.params.id;
+    try {
+        const result = await recipeDao.deleteRecepie(id);
+        return res.status(200).json(result);
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: "Internal Server Error" });
