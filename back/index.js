@@ -5,7 +5,7 @@ const userRouter = require('../back/controllers/UserController')
 const recepieRouter = require('../back/controllers/recepieController')
 const cors = require("cors");
 
-const port = 5000;
+const port = 5050;
 
 app.get("/", (request, responce) =>{
     responce.send("SalemAlem");
