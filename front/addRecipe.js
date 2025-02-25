@@ -6,14 +6,15 @@ document.getElementById('add-recipe-form').addEventListener('submit', async func
     const instructions = document.getElementById('instructions').value;
     const status = document.getElementById('status').value;
     const authorid = localStorage.getItem('user_id');
+    const category = document.getElementById('category').value;
     alert('author:', authorid);
 
-    const response = await fetch('http://localhost:5000/recepie/add', {
+    const response = await fetch('http://localhost:5050/recepie/add', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ title, ingredients, instructions, authorid})
+        body: JSON.stringify({ title, ingredients, instructions, authorid, category})
     });
 
     if (response.ok) {

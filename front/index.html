@@ -123,6 +123,16 @@
 </div>
 <div class="cards-container" id="latest-recipes">
     <h2>Latest Recipes</h2>
+    <select id="categoryFilter" onchange="getCategory()"> 
+        <option value="">All</option>
+        <option value="breakfast">Breakfast</option>
+        <option value="first_course">First course</option>
+        <option value="second_course">Second course</option>
+    </select>
+    
+    <div id="recipesContainer"></div>
+    
+    
     <div class="row">
         <div class="col-md-4">
             <div class="card h-100">
@@ -180,33 +190,49 @@
 </footer>
 <script>
 document.addEventListener("DOMContentLoaded", async function () {
+    const category="all";
+    await show(category);
+    
+});
+
+async function getCategory() {
+    const category = document.getElementById('categoryFilter').value;
+    await show(category);
+}
+
+async function show(category)
+{
     try {
-        const response = await fetch("http://localhost:5000/recepie/list")
+        const response = await fetch("http://localhost:5050/recepie/list")
          
         const recipes = await response.json();
         
         const cardsContainer = document.querySelector(".row");
         cardsContainer.innerHTML = ""; // Clear existing cards
         recipes.forEach(recipe => {
-            const card = document.createElement("div");
-            card.className = "col-md-4";
-            card.innerHTML = `
-                <div class="card h-100">
-                    <img src="${recipe.picture_url || 'default.jpg'}" class="card-img-top" alt="Recipe image">
-                    <div class="ca  rd-body">
-                        <h5 class="card-title">${JSON.stringify(recipe.title)}</h5>
-                        <button  class="btn btn-primary show-recipe-btn" data-bs-toggle="modal" data-bs-target="#recipeModal" "> Show </button>
+            if(recipe.category === category || category === "all"){
+                const card = document.createElement("div");
+                card.className = "col-md-4";
+                card.innerHTML = `
+                    <div class="card h-100">
+                        <img src="${recipe.picture_url || 'default.jpg'}" class="card-img-top" alt="Recipe image">
+                        <div class="card-body">
+                            <h5 class="card-title">${JSON.stringify(recipe.title)}</h5>
+                            <button  class="btn btn-primary show-recipe-btn" data-bs-toggle="modal" data-bs-target="#recipeModal" "> Show </button>
+                        </div>
                     </div>
-                </div>
-            `;
+                `;
             card.querySelector(".show-recipe-btn").addEventListener("click", () => showRecipeDetails(recipe));
 
             cardsContainer.appendChild(card);
+            }
+            
         });
     } catch (error) {
         console.error("Error fetching recipes:", error);
     }
-});
+}
+
 function showRecipeDetails(recipe) {
     const modal = new bootstrap.Modal(document.getElementById('recipeModal'));
     let modalBody = document.querySelector(".modal-body");
