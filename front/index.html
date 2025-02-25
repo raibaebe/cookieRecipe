@@ -123,6 +123,7 @@
 </div>
 <div class="cards-container" id="latest-recipes">
     <h2>Latest Recipes</h2>
+<<<<<<< HEAD
     <select id="categoryFilter" onchange="getCategory()"> 
         <option value="">All</option>
         <option value="breakfast">Breakfast</option>
@@ -133,6 +134,15 @@
     <div id="recipesContainer"></div>
     
     
+=======
+    <label for = "category"> Category of the food</label>
+        <select id = "category" onchange="changeCategory()">
+            <option value = "all">all</option>
+            <option value = "breakfast">breakfast</option>
+            <option value = "first course">first course</option>
+            <option value = "second course">second course</option>
+        </select>
+>>>>>>> 7f685bd0a77d2526a4aa3c7e02f221e2113b8b4f
     <div class="row">
         <div class="col-md-4">
             <div class="card h-100">
@@ -190,44 +200,53 @@
 </footer>
 <script>
 document.addEventListener("DOMContentLoaded", async function () {
-    const category="all";
+
+    category = 'all';
     await show(category);
-    
 });
 
-async function getCategory() {
-    const category = document.getElementById('categoryFilter').value;
+async function changeCategory()
+{
+    category = document.getElementById('category').value;
+
     await show(category);
 }
 
 async function show(category)
 {
     try {
-        const response = await fetch("http://localhost:5050/recepie/list")
+
+        const response = await fetch("/recepie/list")
+
          
         const recipes = await response.json();
         
         const cardsContainer = document.querySelector(".row");
         cardsContainer.innerHTML = ""; // Clear existing cards
         recipes.forEach(recipe => {
-            if(recipe.category === category || category === "all"){
+
+            if(category === 'all' || recipe.category === category){
+
                 const card = document.createElement("div");
                 card.className = "col-md-4";
                 card.innerHTML = `
                     <div class="card h-100">
                         <img src="${recipe.picture_url || 'default.jpg'}" class="card-img-top" alt="Recipe image">
-                        <div class="card-body">
+
+                        <div class="ca  rd-body">
+
                             <h5 class="card-title">${JSON.stringify(recipe.title)}</h5>
                             <button  class="btn btn-primary show-recipe-btn" data-bs-toggle="modal" data-bs-target="#recipeModal" "> Show </button>
                         </div>
                     </div>
                 `;
-            card.querySelector(".show-recipe-btn").addEventListener("click", () => showRecipeDetails(recipe));
 
-            cardsContainer.appendChild(card);
+                card.querySelector(".show-recipe-btn").addEventListener("click", () => showRecipeDetails(recipe));
+
+                cardsContainer.appendChild(card);
             }
-            
         });
+
     } catch (error) {
         console.error("Error fetching recipes:", error);
     }

@@ -24,7 +24,7 @@ class recepieDAO
     async getRecepie() {
         try {
             const result = await DB.query(
-                "SELECT title, ingredients, instructions, picture_url FROM recipe "
+                "SELECT id, title, ingredients, instructions, picture_url, category FROM recipe "
             );
             if (result.rows.length === 0) {
                 return null; 
@@ -35,10 +35,11 @@ class recepieDAO
             throw new Error("Failed to retrieve recepie. Please try again later.");
         }
     }
+    //this is for taking only users recipes
     async getRecepieid(id){
         try{
             const result = await DB.query(
-                "SELECT title, ingredients, instructions, picture_url FROM recipe WHERE author_id=$1",[id]
+                "SELECT id, title, ingredients, instructions, picture_url FROM recipe WHERE author_id=$1",[id]
             );
             if (result.rows.length === 0) {
                 return null; 
@@ -48,7 +49,47 @@ class recepieDAO
             console.error("Error in getRecepie:", error.message);
             throw new Error("Failed to retrieve recepie. Please try again later.");
         }
-        
+    
+    }
+    //this is for taken recipe before update
+    async getRecepieId(id){
+        try{
+            const result = await DB.query(
+                "SELECT id, title, ingredients, instructions, picture_url FROM recipe WHERE id=$1",[id]
+            );
+            if (result.rows.length === 0) {
+                return null; 
+            }
+            return result.rows[0];
+        } catch (error) {
+            console.error("Error in getRecepie:", error.message);
+            throw new Error("Failed to retrieve recepie. Please try again later.");
+        }
+    
+    }
+    async updateRecepie(id, recepie) {
+        try {
+            await DB.query(
+                "UPDATE recipe SET title=$1, ingredients=$2, instructions=$3, picture_url=$4, category=$5 WHERE id=$6",
+                [recepie.title, recepie.ingredients, recepie.instructions, recepie.picture_url, recepie.category, id]
+            );
+            return { success: true, message: "Recepie updated successfully" };
+        } catch (error) {
+            console.error("Error in updateRecepie:", error.message);
+            throw new Error("Failed to update recepie. Please try again later.");
+        }
+    }
+    async deleteRecepie(id) {
+        try {
+            await DB.query(
+                "DELETE FROM recipe WHERE id=$1",
+                [id]
+            );
+            return { success: true, message: "Recepie deleted successfully" };
+        } catch (error) {
+            console.error("Error in deleteRecepie:", error.message);
+            throw new Error("Failed to delete recepie. Please try again later.");
+        }
     }
 }
 

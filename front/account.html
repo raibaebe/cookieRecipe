@@ -12,12 +12,10 @@
 </head>
 <body>
     <header>
-    
         <nav class="navbar navbar-expand-lg bg-body-tertiary w-100">
             <a class="navbar-brand" href="index.html">
                 <img class="logo" src="images/Recipe Finder (1).png" alt="logo" width="30" height="24">
             </a>
-
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -37,50 +35,34 @@
                     <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
                     <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
                     <button id="toggleDarkMode" class="btn">DarkMode</button>
-
                 </div>
             </div>
-           
         </nav>
-        
     </header>
   
     <main class="container mt-4">
-        <h1 id = "status">Welcome to Your Account Page</h1>
+        <h1 id="status">Welcome to Your Account Page</h1>
         <p>Email: <span id="userEmail"></span></p>
         <a id="addRecipe" class="nav-link" href="addRecipe.html">Add recipe</a>
     </main>
     <div class="cards-container" id="latest-recipes">
         <h2>Latest Recipes</h2>
         <div class="row">
-            <div class="col-md-4">
-                <div class="card h-100">
-                    <img src="images/cards1.webp" class="card-img-top" alt="nachos in a palate">
-                    <div class="card-body">
-                        <h5 class="card-title">The Best Recipes To Make For Football Watch Parties</h5>
-                        <a href="https://tasty.co/article/jenniferadams2/best-football-party-recipes" class="btn btn-primary">Read more</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100">
-                    <img src="images/card2.webp" class="card-img-top" alt="back-to-school snacks">
-                    <div class="card-body">
-                        <h5 class="card-title">17 Of The Coolest Back-To-School Snacks That Take Under 10 Minutes To Make</h5>
-                        <a href="https://www.yahoo.com/lifestyle/clever-easy-10-minute-less-162243385.html" class="btn btn-primary">Read more</a>
-                    </div>
-                </div>
-            </div>
+            <!-- Recipe cards will be inserted here dynamically -->
         </div>
     </div>
-    <script>       
+    <script>
         document.addEventListener("DOMContentLoaded", async () => {
+            authorized = false;
             const status = document.getElementById('status');
+            const addRecipeButton = f=document.getElementById('addRecipe');
             const token = localStorage.getItem('authToken'); // Assuming you store the JWT in local storage
-            let ID ='';
+            let ID = '';
             if (token) {
                 try {
-                    const res = await fetch("http://localhost:5050/auth/account", {
+
+                    const res = await fetch("/auth/account", {
+
                         method: 'GET',
                         headers: {
                             'Authorization': token
@@ -88,67 +70,89 @@
                     });
 
                     if (res.ok) {
+                        authorized = true;
                         const data = await res.json();
                         document.getElementById('userEmail').textContent = data.email;
-                        ID=JSON.stringify(data.userId);
+                        ID = data.userId;
                         document.getElementById('account').style.display = 'block';
                         document.getElementById('logoutButton').style.display = 'block';
                     } else {
-                        status.textContent = "Failed to fetch account data";
+                        status.textContent = "Not logged in";
+                        addRecipeButton.textContent = " ";
                     }
                 } catch (err) {
                     status.textContent = "Error: " + err.message;
                 }
             } else {
                 status.textContent = "Not logged in";
+                addRecipeButton.textContent = " ";
             }
+            if(authorized === true)
+            {
             try {
+
                 console.log(ID);
-        const response = await fetch(`http://localhost:5000/recepie/list/${ID}`)
-         
-        const recipes = await response.json();
-        
-        const cardsContainer = document.querySelector(".row");
-        cardsContainer.innerHTML = ""; // Clear existing cards
-        recipes.forEach(recipe => {
-            const card = document.createElement("div");
-            card.className = "col-md-4";
-            card.innerHTML = `
-                <div class="card h-100">
-                    <img src="${recipe.picture_url || 'default.jpg'}" class="card-img-top" alt="Recipe image">
-                    <div class="card-body">
-                        <h5 class="card-title">${JSON.stringify(recipe.title)}</h5>
-                        <p class="card-text">Ingredients: ${JSON.stringify(recipe.ingredients)}</p>
-                    </div>
-                </div>
-            `;
-            cardsContainer.appendChild(card);
-        });
-        // <a href="#" class="btn btn-primary">Read more</a>
+                const response = await fetch(`/recepie/list/${ID}`);
+                const recipes = await response.json();
 
-        // Create a new div to display additional recipe results
-        
-    } catch (error) {
-        console.error("Error fetching recipes:", error);
-    }
-        }
-        );
-       
-        // const userEmail = localStorage.getItem('userEmail');
-        // document.getElementById('userEmail').textContent = userEmail ? userEmail : 'Guest';
+                const cardsContainer = document.querySelector(".row");
+                cardsContainer.innerHTML = ""; 
+                recipes.forEach(recipe => {
+                    const card = document.createElement("div");
+                    card.className = "col-md-4";
+                    card.innerHTML = `
+                        <div class="card h-100">
+                            <img src="${recipe.picture_url || 'default.jpg'}" class="card-img-top" alt="Recipe image">
+                            <div class="card-body">
+                                <h5 class="card-title">${recipe.title}</h5>
+                                <p class="card-text">Ingredients: ${recipe.ingredients}</p>
+                                <button class="btn btn-primary update-recipe-btn" data-id="${recipe.id}">Update</button>
+                                <button class="btn btn-danger delete-recipe-btn" data-id="${recipe.id}">Delete</button>
+                            </div>
+                        </div>
+                    `;
+                    cardsContainer.appendChild(card);
+                });
 
-        // // Logout functionality
-        // document.getElementById('logoutButton').addEventListener('click', () => {
-        //     localStorage.removeItem('isLoggedIn');
-        //     localStorage.removeItem('userEmail');
-        //     localStorage.removeItem('userPassword');
-        //     window.location.href = 'login.html';
-        // });
-    
-    </script><script src="darkmode.js"></script>
+                // Add event listeners for update and delete buttons
+                document.querySelectorAll('.update-recipe-btn').forEach(button => {
+                    button.addEventListener('click', async (event) => {
+                        const recipeId = event.target.getAttribute('data-id');
+                        // Redirect to update page or open update modal
+                        window.location.href = `updateRecipe.html?id=${recipeId}`;
+                    });
+                });
+
+                document.querySelectorAll('.delete-recipe-btn').forEach(button => {
+                    button.addEventListener('click', async (event) => {
+                        const recipeId = event.target.getAttribute('data-id');
+                        try {
+                            const response = await fetch(`/recepie/delete/${recipeId}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Authorization': token
+                                }
+                            });
+                            if (response.ok) {
+                                // Remove the card from the DOM
+                                event.target.closest('.col-md-4').remove();
+                            } else {
+                                console.error('Failed to delete recipe');
+                            }
+                        } catch (error) {
+                            console.error('Error deleting recipe:', error);
+                        }
+                    });
+                });
+
+            } catch (error) {
+                console.error("Error fetching recipes:", error);
+            }
+        }});
+    </script>
+    <script src="darkmode.js"></script>
     <script src="script.js"></script>
     <script src="sign.js"></script>
     <script src="logout.js"></script>
-    
 </body>
 </html>

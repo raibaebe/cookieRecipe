@@ -5,16 +5,36 @@ document.getElementById('add-recipe-form').addEventListener('submit', async func
     const ingredients = document.getElementById('ingredients').value;
     const instructions = document.getElementById('instructions').value;
     const status = document.getElementById('status').value;
+    const imageInput = document.getElementById('image');
     const authorid = localStorage.getItem('user_id');
     const category = document.getElementById('category').value;
-    alert('author:', authorid);
 
-    const response = await fetch('http://localhost:5050/recepie/add', {
+
+    const formData = new FormData();
+    formData.append('image', imageInput.files[0]); 
+
+    // Upload the image first
+    const imageUploadResponse = await fetch('/recepie/upload-image', {
+        method: 'POST',
+        body: formData
+    });
+
+    if (!imageUploadResponse.ok) {
+        alert('Failed to upload image.');
+        return;
+    }
+
+    const imageData = await imageUploadResponse.json(); 
+    
+    const response = await fetch('/recepie/add', {
+
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ title, ingredients, instructions, authorid, category})
+
+        body: JSON.stringify({ title, ingredients, instructions, author_id: authorid, category: category, imagePath: imageData.path })
+
     });
 
     if (response.ok) {
